@@ -17,13 +17,12 @@ urlsSchema.pre('save', function(next){
   if ( !this.created_at ) {
     this.created_at = now;
   }
+  if ( !this.code ) {
+    var shasum = crypto.createHash('sha1');
+    shasum.update(this.url);
+    this.code = shasum.digest('hex').slice(0, 5);
+  }
   next();
-});
-
-urlsSchema.post('init', function(url) {
-  var shasum = crypto.createHash('sha1');
-  shasum.update(url.url);
-  url.code = shasum.digest('hex').slice(0, 5);
 });
 
 var Link = mongoose.model('Link', urlsSchema);

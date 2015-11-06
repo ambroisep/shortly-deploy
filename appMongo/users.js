@@ -15,11 +15,8 @@ usersSchema.pre('save', function(next){
   if ( !this.created_at ) {
     this.created_at = now;
   }
+  this.hashPassword();
   next();
-});
-
-usersSchema.post('init', function(user) {
-  user.hashPassword();
 });
 
 usersSchema.methods.hashPassword = function(){
